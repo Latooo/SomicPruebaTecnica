@@ -120,19 +120,19 @@ Al hacer clic en el botón:
 ```
 /Proyecto
 │
-├── /Controller
+├── /controller
 │   ├── ArticuloController.java
 │   ├── FacturaController.java
 │   ├── FacturaKardexController.java
 │   └── NitController.java
 │
-├── /DAO
+├── /repository
 │   ├── ArticuloDAO.java
 │   ├── FacturaDAO.java
 │   ├── FacturaKardexDAO.java
 │   └── NitDAO.java
 │
-├── /Model
+├── /model
 │   ├── Articulo.java
 │   ├── Factura.java
 │   ├── FacturaKardex.java
