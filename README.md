@@ -127,10 +127,10 @@ Al hacer clic en el botón:
 │   └── NitController.java
 │
 ├── /repository
-│   ├── ArticuloDAO.java
-│   ├── FacturaDAO.java
-│   ├── FacturaKardexDAO.java
-│   └── NitDAO.java
+│   ├── ArticuloRepository.java
+│   ├── FacturaRepository.java
+│   ├── FacturaKardexRepository.java
+│   └── NitRepository.java
 │
 ├── /model
 │   ├── Articulo.java
