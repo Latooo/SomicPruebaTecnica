@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes</title>
+    <link rel="stylesheet" href="clientes.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="clientes.html">Clientes</a>
+        <a href="articulos.html">Artículos</a>
+        <a href="index.html">Factura</a>
+    </div>
+
+    <div class="container">
+        <center><h1>Modulo de Clientes</h1></center>
+
+        <form id="clienteForm" onsubmit="guardarCliente(event)">
+            <input type="hidden" id="NitId">
+            <label>Nombre: <input type="text" id="NitNom" required></label>
+            <label>Documento: <input type="text" id="NitDoc" required></label>
+            <label>Cupo: <input type="number" id="NitCup" step="0.01" required></label>
+            <label>Plazo: <input type="number" id="NitPla" required></label>
+            <button type="submit">Guardar</button>
+            <button type="button" onclick="limpiarFormulario()">Nuevo</button>
+        </form>
+
+        <h2>Lista de Clientes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Cupo</th>
+                    <th>Plazo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="clientesTabla"></tbody>
+        </table>
+    </div>
+
+    <script>
+        function obtenerClientes() {
+            return JSON.parse(localStorage.getItem('clientes')) || [];
+        }
+
+        function guardarClientes(clientes) {
+            localStorage.setItem('clientes', JSON.stringify(clientes));
+        }
+
+        function cargarClientes() {
+            const tabla = document.getElementById("clientesTabla");
+            const clientes = obtenerClientes();
+            tabla.innerHTML = "";
+            clientes.forEach((c, i) => {
+                tabla.innerHTML += `
+                    <tr>
+                        <td>${c.NitNom}</td>
+                        <td>${c.NitDoc}</td>
+                        <td>${c.NitCup}</td>
+                        <td>${c.NitPla}</td>
+                        <td>
+                            <button onclick="editarCliente(${i})">Editar</button>
+                            <button onclick="eliminarCliente(${i})">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function guardarCliente(e) {
+            e.preventDefault();
+            const id = document.getElementById("NitId").value;
+            const cliente = {
+                NitNom: document.getElementById("NitNom").value,
+                NitDoc: document.getElementById("NitDoc").value,
+                NitCup: parseFloat(document.getElementById("NitCup").value),
+                NitPla: parseInt(document.getElementById("NitPla").value)
+            };
+
+            let clientes = obtenerClientes();
+            if (id) {
+                clientes[id] = cliente;
+            } else {
+                clientes.push(cliente);
+            }
+
+            guardarClientes(clientes);
+            limpiarFormulario();
+            cargarClientes();
+        }
+
+        function editarCliente(index) {
+            const cliente = obtenerClientes()[index];
+            document.getElementById("NitId").value = index;
+            document.getElementById("NitNom").value = cliente.NitNom;
+            document.getElementById("NitDoc").value = cliente.NitDoc;
+            document.getElementById("NitCup").value = cliente.NitCup;
+            document.getElementById("NitPla").value = cliente.NitPla;
+        }
+
+        function eliminarCliente(index) {
+            if (confirm("¿Seguro que deseas eliminar este cliente?")) {
+                let clientes = obtenerClientes();
+                clientes.splice(index, 1);
+                guardarClientes(clientes);
+                cargarClientes();
+            }
+        }
+
+        function limpiarFormulario() {
+            document.getElementById("clienteForm").reset();
+            document.getElementById("NitId").value = "";
+        }
+
+        window.onload = cargarClientes;
+    </script>
+</body>
+</html>
